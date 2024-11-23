@@ -1,5 +1,7 @@
+'use client'
 import React from 'react';
 import { Plus, Users, Code, CheckCircle2, Timer, Activity, TrendingUp } from 'lucide-react';
+import { useRouter } from 'next/navigation'
 
 const SimpleBarChart = ({ data }) => {
   const maxValue = Math.max(...data.map(d => d.value));
@@ -21,6 +23,7 @@ const SimpleBarChart = ({ data }) => {
 };
 
 export default function ProblemAdminDashboard() {
+ const router= useRouter()
   const submissionData = [
     { label: 'Mon', value: 240 },
     { label: 'Tue', value: 139 },
@@ -36,7 +39,7 @@ export default function ProblemAdminDashboard() {
       {/* Top Action Bar */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Problem Admin Dashboard</h1>
-        <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+        <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onClick={()=>router.push("/addproblem")}>
           <Plus size={20} />
           <span>Add New Problem</span>
         </button>
