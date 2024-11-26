@@ -10,12 +10,15 @@ import {
   CheckCircle, Star, Coffee, Sparkles,
   ChevronRight, Layout, Settings, FileCode
 } from "lucide-react";
-
+import Markdown from 'react-markdown'
 const ProblemCreator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
   const [difficulty, setDifficulty] = useState('');
-
+  const [isShowPreview, setIsShowPreview] = useState(false);
+  const [problemDescription,setProblemDescription] = useState('');
+  const [problemInfo,setProblemInfo] = useState({title:"",codeStub:""});
+  console.log(problemInfo)
   const steps = [
     { number: 1, title: 'Basic Info', icon: Layout },
     { number: 2, title: 'Description', icon: FileCode },
@@ -107,6 +110,8 @@ const ProblemCreator = () => {
                 <div className="space-y-6">
                   <Label className="text-lg text-white/90">Problem Title</Label>
                   <Input 
+                  onChange={(e) => setProblemInfo({ ...problemInfo, title: e.target.value })}
+                  value={problemInfo.title || ''}
                     placeholder="Enter an engaging title..."
                     className="bg-white/5 border-white/10 text-white placeholder:text-white/50 h-14 text-lg"
                   />
@@ -157,12 +162,20 @@ const ProblemCreator = () => {
               <div className="space-y-6 animate-in fade-in duration-500">
                 <div className="flex items-center justify-between">
                   <Label className="text-lg text-white/90">Problem Description</Label>
+                  <button onClick={() => setIsShowPreview(!isShowPreview)} className="text-sm text-white/50">{!isShowPreview ? 'Preview' : 'Edit'}</button>
                   <span className="text-sm text-white/50">Markdown Supported</span>
                 </div>
-                <Textarea 
-                  placeholder="Describe your problem here..."
-                  className="min-h-[400px] bg-white/5 border-white/10 text-white placeholder:text-white/50"
-                />
+                {
+                  !isShowPreview? (
+                    <Textarea 
+                    value={problemDescription|| ""}
+                    onChange={(e) => setProblemDescription(e.target.value)}
+                    placeholder="Describe your problem here..."
+                    className="min-h-[400px] bg-white/5 border-white/10 text-white placeholder:text-white/50"
+                  />
+                  ):(<Markdown>{problemDescription}</Markdown>)
+                }
+             
               </div>
             )}
 
@@ -179,6 +192,8 @@ const ProblemCreator = () => {
                     </div>
                   </div>
                   <Textarea 
+                    onChange={(e) => setProblemInfo({ ...problemInfo, codeStub: e.target.value })}
+                    value={problemInfo.codeStub || ''}
                     className="min-h-[400px] bg-slate-900 border-0 text-white font-mono placeholder:text-white/30"
                     placeholder="// Write your starter code here..."
                   />
