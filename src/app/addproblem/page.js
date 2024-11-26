@@ -5,21 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  MenuIcon, Code, BookOpen, Lightbulb, Save, 
+import {
+  MenuIcon, Code, BookOpen, Lightbulb, Save,
   CheckCircle, Star, Coffee, Sparkles,
   ChevronRight, Layout, Settings, FileCode
 } from "lucide-react";
 import Markdown from 'react-markdown'
 import { ArticleModal } from '@/components/ui/custom/ArticleModal';
+import { SolutionModal } from '@/components/ui/custom/SolutionModal';
 const ProblemCreator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
   const [difficulty, setDifficulty] = useState('');
   const [isShowPreview, setIsShowPreview] = useState(false);
-  const [problemDescription,setProblemDescription] = useState('');
-  const [problemInfo,setProblemInfo] = useState({title:"",codeStub:""});
-  const [article,setArticle] = useState("");
+  const [problemDescription, setProblemDescription] = useState('');
+  const [problemInfo, setProblemInfo] = useState({ title: "", codeStub: "" });
+  const [article, setArticle] = useState("");
   const steps = [
     { number: 1, title: 'Basic Info', icon: Layout },
     { number: 2, title: 'Description', icon: FileCode },
@@ -37,14 +38,14 @@ const ProblemCreator = () => {
     <div className="flex min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       {/* Overlay for mobile */}
       {isMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-30 md:hidden"
           onClick={() => setIsMenuOpen(false)}
         />
       )}
 
       {/* Mobile Menu Button */}
-      <button 
+      <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="md:hidden fixed top-4 right-4 z-50 bg-white/10 p-2 rounded-lg backdrop-blur-sm"
       >
@@ -76,14 +77,13 @@ const ProblemCreator = () => {
                 }}
                 className={`
                   w-full flex items-center gap-3 p-3 rounded-xl transition-all group
-                  ${activeStep === step.number 
-                    ? 'bg-blue-500/20 text-blue-400' 
+                  ${activeStep === step.number
+                    ? 'bg-blue-500/20 text-blue-400'
                     : 'hover:bg-white/5 text-white/70'}
                 `}
               >
-                <step.icon className={`w-5 h-5 ${
-                  activeStep === step.number ? 'text-blue-400' : 'text-white/50'
-                }`} />
+                <step.icon className={`w-5 h-5 ${activeStep === step.number ? 'text-blue-400' : 'text-white/50'
+                  }`} />
                 <span className="font-medium">{step.title}</span>
                 {activeStep === step.number && (
                   <ChevronRight className="w-4 h-4 ml-auto" />
@@ -110,9 +110,9 @@ const ProblemCreator = () => {
               <div className="space-y-8 animate-in fade-in duration-500">
                 <div className="space-y-6">
                   <Label className="text-lg text-white/90">Problem Title</Label>
-                  <Input 
-                  onChange={(e) => setProblemInfo({ ...problemInfo, title: e.target.value })}
-                  value={problemInfo.title || ''}
+                  <Input
+                    onChange={(e) => setProblemInfo({ ...problemInfo, title: e.target.value })}
+                    value={problemInfo.title || ''}
                     placeholder="Enter an engaging title..."
                     className="bg-white/5 border-white/10 text-white placeholder:text-white/50 h-14 text-lg"
                   />
@@ -127,15 +127,14 @@ const ProblemCreator = () => {
                         onClick={() => setDifficulty(level)}
                         className={`
                           relative p-4 rounded-xl border-2 transition-all
-                          ${difficulty === level 
-                            ? `border-${color}-500 bg-${color}-500/10` 
+                          ${difficulty === level
+                            ? `border-${color}-500 bg-${color}-500/10`
                             : 'border-white/10 hover:border-white/20'}
                         `}
                       >
                         <div className="flex items-center gap-3">
-                          <Icon className={`w-5 h-5 ${
-                            difficulty === level ? `text-${color}-400` : 'text-white/70'
-                          }`} />
+                          <Icon className={`w-5 h-5 ${difficulty === level ? `text-${color}-400` : 'text-white/70'
+                            }`} />
                           <span className="capitalize font-medium">{level}</span>
                         </div>
                         {difficulty === level && (
@@ -150,7 +149,7 @@ const ProblemCreator = () => {
 
                 <div className="space-y-6">
                   <Label className="text-lg text-white/90">Tags</Label>
-                  <Input 
+                  <Input
                     placeholder="Add tags separated by commas..."
                     className="bg-white/5 border-white/10 text-white placeholder:text-white/50"
                   />
@@ -167,16 +166,16 @@ const ProblemCreator = () => {
                   <span className="text-sm text-white/50">Markdown Supported</span>
                 </div>
                 {
-                  !isShowPreview? (
-                    <Textarea 
-                    value={problemDescription|| ""}
-                    onChange={(e) => setProblemDescription(e.target.value)}
-                    placeholder="Describe your problem here..."
-                    className="min-h-[400px] bg-white/5 border-white/10 text-white placeholder:text-white/50"
-                  />
-                  ):(<Markdown>{problemDescription}</Markdown>)
+                  !isShowPreview ? (
+                    <Textarea
+                      value={problemDescription || ""}
+                      onChange={(e) => setProblemDescription(e.target.value)}
+                      placeholder="Describe your problem here..."
+                      className="min-h-[400px] bg-white/5 border-white/10 text-white placeholder:text-white/50"
+                    />
+                  ) : (<Markdown>{problemDescription}</Markdown>)
                 }
-             
+
               </div>
             )}
 
@@ -192,7 +191,7 @@ const ProblemCreator = () => {
                       <div className="w-3 h-3 rounded-full bg-emerald-500" />
                     </div>
                   </div>
-                  <Textarea 
+                  <Textarea
                     onChange={(e) => setProblemInfo({ ...problemInfo, codeStub: e.target.value })}
                     value={problemInfo.codeStub || ''}
                     className="min-h-[400px] bg-slate-900 border-0 text-white font-mono placeholder:text-white/30"
@@ -205,27 +204,16 @@ const ProblemCreator = () => {
             {/* Step 4: Extras */}
             {activeStep === 4 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 animate-in fade-in duration-500">
-                <button className="group p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
+                {/* <button className="group p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-xl bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <BookOpen className="w-6 h-6 text-blue-400" />
-                    </div>
-                      <ArticleModal article={article } setArticle={setArticle}/>
-                      {/* <h3 className="font-medium text-lg text-white">Add Article</h3> */}
-                  </div>
-                </button>
+                    </div> */}
+                    <ArticleModal article={article} setArticle={setArticle} />
+                  {/* </div>
+                </button> */}
 
-                <button className="group p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-xl bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Lightbulb className="w-6 h-6 text-blue-400" />
-                    </div>
-                    <div className="text-left">
-                      <h3 className="font-medium text-lg text-white">Add Solution</h3>
-                      <p className="text-sm text-white/50">Include your solution</p>
-                    </div>
-                  </div>
-                </button>
+                <SolutionModal />
               </div>
             )}
           </div>
