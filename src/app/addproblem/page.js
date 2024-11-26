@@ -19,7 +19,7 @@ const ProblemCreator = () => {
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [problemDescription,setProblemDescription] = useState('');
   const [problemInfo,setProblemInfo] = useState({title:"",codeStub:""});
-  console.log(problemInfo)
+  const [article,setArticle] = useState("");
   const steps = [
     { number: 1, title: 'Basic Info', icon: Layout },
     { number: 2, title: 'Description', icon: FileCode },
@@ -210,11 +210,8 @@ const ProblemCreator = () => {
                     <div className="h-12 w-12 rounded-xl bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <BookOpen className="w-6 h-6 text-blue-400" />
                     </div>
-                    <div className="text-left">
-                      <ArticleModal/>
+                      <ArticleModal article={article } setArticle={setArticle}/>
                       {/* <h3 className="font-medium text-lg text-white">Add Article</h3> */}
-                      <p className="text-sm text-white/50">Provide additional context</p>
-                    </div>
                   </div>
                 </button>
 

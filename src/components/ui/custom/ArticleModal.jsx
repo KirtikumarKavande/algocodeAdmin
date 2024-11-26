@@ -7,28 +7,36 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import React, { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
-export function ArticleModal() {
+export function ArticleModal({article,setArticle}) {
+
   return (
     <Dialog >
       <DialogTrigger asChild>
+      <div className="text-left">
       <h3 className="font-medium text-lg text-white">Add Article</h3>
+      <p className="text-sm text-white/50">Provide additional context</p>
+      </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-gray-800">
+      <DialogContent className=" bg-gray-400 ">
         <DialogHeader>
-          <DialogTitle className="text-white">Add Article</DialogTitle>
-          <DialogDescription className="text-white">
+          <DialogTitle className="">Add Article</DialogTitle>
+          <DialogDescription className="text-black">
             Make changes to your Article here. 
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-        
+        <div className="min-h-96 max-h-[400px] overflow-y-scroll">
+        <ReactQuill className="text-black "  theme="snow" value={article} onChange={setArticle} />
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+        <DialogClose asChild>
+          <Button >Save changes</Button>
+          </DialogClose >
         </DialogFooter>
       </DialogContent>
     </Dialog>
