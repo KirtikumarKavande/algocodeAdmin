@@ -11,6 +11,7 @@ import {
   ChevronRight, Layout, Settings, FileCode
 } from "lucide-react";
 import Markdown from 'react-markdown'
+import { ArticleModal } from '@/components/ui/custom/ArticleModal';
 const ProblemCreator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
@@ -210,7 +211,8 @@ const ProblemCreator = () => {
                       <BookOpen className="w-6 h-6 text-blue-400" />
                     </div>
                     <div className="text-left">
-                      <h3 className="font-medium text-lg text-white">Add Article</h3>
+                      <ArticleModal/>
+                      {/* <h3 className="font-medium text-lg text-white">Add Article</h3> */}
                       <p className="text-sm text-white/50">Provide additional context</p>
                     </div>
                   </div>
