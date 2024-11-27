@@ -204,14 +204,9 @@ const ProblemCreator = () => {
             {/* Step 4: Extras */}
             {activeStep === 4 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 animate-in fade-in duration-500">
-                {/* <button className="group p-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-xl bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <BookOpen className="w-6 h-6 text-blue-400" />
-                    </div> */}
+               
                     <ArticleModal article={article} setArticle={setArticle} />
-                  {/* </div>
-                </button> */}
+                
 
                 <SolutionModal />
               </div>

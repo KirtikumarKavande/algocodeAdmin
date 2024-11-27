@@ -42,7 +42,7 @@ export function ArticleModal({ article, setArticle }) {
             Make changes to your Article here.
           </DialogDescription>
         </DialogHeader>
-        <div className="min-h-96 max-h-[400px] overflow-y-scroll">
+        <div className="min-h-96 max-h-[400px] overflow-y-scroll no-scrollbar">
           <ReactQuill
             className="text-black "
             theme="snow"
