@@ -21,6 +21,13 @@ const ProblemCreator = () => {
   const [problemDescription, setProblemDescription] = useState('');
   const [problemInfo, setProblemInfo] = useState({ title: "", codeStub: "" });
   const [article, setArticle] = useState("");
+  const [problemSolution,setProblemSolution] = useState({
+    cpp: "",
+    java: "",
+    python: "",
+    javascript: "",
+  });
+  console.log(problemSolution)
   const steps = [
     { number: 1, title: 'Basic Info', icon: Layout },
     { number: 2, title: 'Description', icon: FileCode },
@@ -33,6 +40,10 @@ const ProblemCreator = () => {
     { level: 'medium', color: 'amber', icon: Star },
     { level: 'hard', color: 'rose', icon: Sparkles }
   ];
+
+  function takeSolution(sol){
+    setProblemSolution(sol)
+  }
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
@@ -204,11 +215,9 @@ const ProblemCreator = () => {
             {/* Step 4: Extras */}
             {activeStep === 4 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 animate-in fade-in duration-500">
-               
-                    <ArticleModal article={article} setArticle={setArticle} />
-                
 
-                <SolutionModal />
+                <ArticleModal article={article} setArticle={setArticle} />
+                <SolutionModal takeSolution={takeSolution} />
               </div>
             )}
           </div>

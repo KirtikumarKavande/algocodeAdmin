@@ -1,34 +1,26 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-} from "@/components/ui/dialog";
+ 
+  import { Dialog, DialogContent, DialogTrigger,  DialogClose,} from "@/components/ui/dialog";
 import React, { useState } from "react";
 import { Lightbulb } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { languageSupported } from "@/utilities/constant";
 
-export function SolutionModal() {
+export function SolutionModal({takeSolution}) {
   const [solution, setSolution] = useState({
     cpp: "",
     java: "",
     python: "",
     javascript: "",
   });
-
   const handleInputChange = (language, value) => {
     setSolution((prev) => ({ ...prev, [language]: value }));
   };
 
-  const handleSubmit = (language) => {
-    console.log(`Submitting solution for ${language}:`, solution[language]);
-    alert(`Solution for ${language} submitted successfully!`);
+  const handleSubmit = () => {
+    takeSolution(solution)
+
   };
   return (
     <Dialog className="w-[100vh]">
@@ -46,7 +38,6 @@ export function SolutionModal() {
         </button>
       </DialogTrigger>
       <DialogContent className=" ">
-   
         <div className="">
           <div className=" mx-auto p-2 bg-white shadow-lg rounded-lg">
             <h1 className="text-xl font-bold mb-2 text-center">
@@ -54,28 +45,15 @@ export function SolutionModal() {
             </h1>
             <Tabs defaultValue="cpp" className="space-y-6">
               <TabsList className="flex justify-center">
-                <TabsTrigger value="cpp" className="w-24 text-center">
-                  C++
-                </TabsTrigger>
-                <TabsTrigger value="java" className="w-24 text-center">
-                  Java
-                </TabsTrigger>
-                <TabsTrigger value="python" className="w-24 text-center">
-                  Python
-                </TabsTrigger>
-                <TabsTrigger value="javascript" className="w-24 text-center">
-                  JavaScript
-                </TabsTrigger>
+                {languageSupported.map((lang) => (
+                  <TabsTrigger value={lang} className="w-24 text-center">
+                    {lang}
+                  </TabsTrigger>
+                ))}
               </TabsList>
-              {["cpp", "java", "python", "javascript"].map((language) => (
+              {languageSupported.map((language) => (
                 <TabsContent value={language} key={language}>
                   <div>
-                    <label
-                      htmlFor={`solution-${language}`}
-                      className="block text-lg font-medium mb-2"
-                    >
-                      Write {language.toUpperCase()} Solution
-                    </label>
                     <div className="bg-slate-800 p-3 border-b border-white/10 flex items-center gap-2">
                       <div className="flex space-x-2">
                         <div className="w-3 h-3 rounded-full bg-rose-500" />
@@ -92,21 +70,22 @@ export function SolutionModal() {
                         handleInputChange(language, e.target.value)
                       }
                       placeholder={`Enter the ${language.toUpperCase()} solution...`}
-                      className="h-[200px] bg-slate-900 border-0 text-white font-mono placeholder:text-white/30 rounded-t-none overflow-y-scroll no-scrollbar "
+                      className="h-[300px] bg-slate-900 border-0 text-white font-mono placeholder:text-white/30 rounded-t-none overflow-y-scroll no-scrollbar "
                     />
-                    <Button
-                      onClick={() => handleSubmit(language)}
-                      className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
-                    >
-                      Submit Solution
-                    </Button>
                   </div>
                 </TabsContent>
               ))}
             </Tabs>
+            <DialogClose asChild>
+            <Button
+              onClick={() => handleSubmit()}
+              className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
+            >
+              Submit Solution
+            </Button>
+            </DialogClose>
           </div>
         </div>
-      
       </DialogContent>
     </Dialog>
   );
