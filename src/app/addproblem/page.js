@@ -13,6 +13,7 @@ import Markdown from 'react-markdown'
 import { ArticleModal } from '@/components/ui/custom/ArticleModal';
 import { SolutionModal } from '@/components/ui/custom/SolutionModal';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 const ProblemCreator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
@@ -73,8 +74,15 @@ const ProblemCreator = () => {
     }
 
     axios.post(`${process.env.NEXT_PUBLIC_PROBLEM_SERVICE_URL}/v1/problems`, problemData)
-    .then(res => console.log("api correct",res))
-    .catch(err => console.log("api wrong",err))
+    .then(res => {
+      toast.success("Problem created successfully")
+    })
+    .catch(err =>
+    {
+      console.log("logged",err)
+      toast.error("Something went wrong Please try again")
+    }
+    )
 
   }
   return (
