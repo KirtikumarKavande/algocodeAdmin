@@ -1,13 +1,18 @@
 import { Button } from "@/components/ui/button";
- 
-  import { Dialog, DialogContent, DialogTrigger,  DialogClose,} from "@/components/ui/dialog";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 import React, { useState } from "react";
 import { Lightbulb } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { languageSupported } from "@/utilities/constant";
 
-export function SolutionModal({takeSolution}) {
+export function SolutionModal({ takeSolution }) {
   const [solution, setSolution] = useState({
     cpp: "",
     java: "",
@@ -19,8 +24,7 @@ export function SolutionModal({takeSolution}) {
   };
 
   const handleSubmit = () => {
-    takeSolution(solution)
-
+    takeSolution(solution);
   };
   return (
     <Dialog className="w-[100vh]">
@@ -77,12 +81,12 @@ export function SolutionModal({takeSolution}) {
               ))}
             </Tabs>
             <DialogClose asChild>
-            <Button
-              onClick={() => handleSubmit()}
-              className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
-            >
-              Submit Solution
-            </Button>
+              <Button
+                onClick={() => handleSubmit()}
+                className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700"
+              >
+                Submit Solution
+              </Button>
             </DialogClose>
           </div>
         </div>

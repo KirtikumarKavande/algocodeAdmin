@@ -1,18 +1,18 @@
 'use client'
 import React, { useState } from 'react';
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   MenuIcon, Code, BookOpen, Lightbulb, Save,
   CheckCircle, Star, Coffee, Sparkles,
-  ChevronRight, Layout, Settings, FileCode
+  ChevronRight, Layout, Settings, FileCode, PlusCircle, Trash2
 } from "lucide-react";
 import Markdown from 'react-markdown'
 import { ArticleModal } from '@/components/ui/custom/ArticleModal';
 import { SolutionModal } from '@/components/ui/custom/SolutionModal';
+import axios from 'axios';
 const ProblemCreator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
@@ -21,19 +21,36 @@ const ProblemCreator = () => {
   const [problemDescription, setProblemDescription] = useState('');
   const [problemInfo, setProblemInfo] = useState({ title: "", codeStub: "" });
   const [article, setArticle] = useState("");
-  const [problemSolution,setProblemSolution] = useState({
+  const [problemSolution, setProblemSolution] = useState({
     cpp: "",
     java: "",
     python: "",
     javascript: "",
   });
-  console.log(problemSolution)
+  const [testCases, setTestCases] = useState([{ input: '', output: '' }]);
+
   const steps = [
     { number: 1, title: 'Basic Info', icon: Layout },
     { number: 2, title: 'Description', icon: FileCode },
     { number: 3, title: 'Code Stub', icon: Code },
-    { number: 4, title: 'Extras', icon: Settings }
+    { number: 4, title: 'Extras', icon: Settings },
+    { number: 5, title: 'Test Cases', icon: CheckCircle }
   ];
+  const addTestCase = () => {
+    setTestCases([...testCases, { input: '', output: '' }]);
+  };
+
+  const updateTestCase = (index, field, value) => {
+    const newTestCases = [...testCases];
+    newTestCases[index][field] = value;
+    setTestCases(newTestCases);
+  };
+
+  const removeTestCase = (index) => {
+    const newTestCases = testCases.filter((_, i) => i !== index);
+    setTestCases(newTestCases.length ? newTestCases : [{ input: '', output: '' }]);
+  };
+
 
   const difficultyOptions = [
     { level: 'easy', color: 'emerald', icon: Coffee },
@@ -41,10 +58,25 @@ const ProblemCreator = () => {
     { level: 'hard', color: 'rose', icon: Sparkles }
   ];
 
-  function takeSolution(sol){
+  function takeSolution(sol) {
     setProblemSolution(sol)
   }
 
+  function handleSaveProblem() {
+    let problemData = {
+      ...problemInfo,
+      description: problemDescription,
+      difficulty: difficulty,
+      article: article,
+      solution: problemSolution,
+      testCases: testCases
+    }
+
+    axios.post(`${process.env.NEXT_PUBLIC_PROBLEM_SERVICE_URL}/v1/problems`, problemData)
+    .then(res => console.log("api correct",res))
+    .catch(err => console.log("api wrong",err))
+
+  }
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
       {/* Overlay for mobile */}
@@ -103,7 +135,7 @@ const ProblemCreator = () => {
             ))}
           </div>
 
-          <div className="mt-8 pt-8 border-t border-white/10">
+          <div className="mt-8 pt-8 border-t border-white/10" onClick={handleSaveProblem}>
             <button className="w-full bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-xl flex items-center justify-center gap-2 transition-all">
               <Save className="w-4 h-4" />
               Save Problem
@@ -220,6 +252,61 @@ const ProblemCreator = () => {
                 <SolutionModal takeSolution={takeSolution} />
               </div>
             )}
+
+            {/* Step 5: Test Cases */}
+            {activeStep === 5 && (
+              <div className="space-y-6 animate-in fade-in duration-500">
+                <div className="flex justify-between items-center">
+                  <Label className="text-lg text-white/90">Test Cases</Label>
+                  <button
+                    onClick={addTestCase}
+                    className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    <PlusCircle className="w-5 h-5" />
+                    Add Test Case
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {testCases.map((testCase, index) => (
+                    <div
+                      key={index}
+                      className="grid grid-cols-1 md:grid-cols-[2fr_2fr_auto] gap-4 items-center"
+                    >
+                      <div>
+                        <Label className="text-sm text-white/70 mb-2">Input</Label>
+                        <Textarea
+                          value={testCase.input}
+                          onChange={(e) => updateTestCase(index, 'input', e.target.value)}
+                          placeholder="Enter input (e.g., [1, 2, 3])"
+                          className="bg-white/5 border-white/10 text-white placeholder:text-white/50 min-h-[100px]"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm text-white/70 mb-2">Expected Output</Label>
+                        <Textarea
+                          value={testCase.output}
+                          onChange={(e) => updateTestCase(index, 'output', e.target.value)}
+                          placeholder="Enter expected output (e.g., 6)"
+                          className="bg-white/5 border-white/10 text-white placeholder:text-white/50 min-h-[100px]"
+                        />
+                      </div>
+                      <div className="flex items-center justify-center">
+                        {testCases.length > 1 && (
+                          <button
+                            onClick={() => removeTestCase(index)}
+                            className="text-rose-500 hover:text-rose-400 transition-colors"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
           </div>
         </Card>
       </main>
