@@ -17,7 +17,7 @@ export function SolutionModal({ takeSolution }) {
     cpp: "",
     java: "",
     python: "",
-    javascript: "",
+    javascript: "-",
   });
   const handleInputChange = (language, value) => {
     setSolution((prev) => ({ ...prev, [language]: value }));

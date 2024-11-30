@@ -14,13 +14,14 @@ import { ArticleModal } from '@/components/ui/custom/ArticleModal';
 import { SolutionModal } from '@/components/ui/custom/SolutionModal';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import CodeStub from '@/components/CodeStub';
 const ProblemCreator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
   const [difficulty, setDifficulty] = useState('');
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [problemDescription, setProblemDescription] = useState('');
-  const [problemInfo, setProblemInfo] = useState({ title: "", codeStub: "" });
+  const [problemTitle, setProblemTitle] = useState("");
   const [article, setArticle] = useState("");
   const [problemSolution, setProblemSolution] = useState({
     cpp: "",
@@ -28,6 +29,13 @@ const ProblemCreator = () => {
     python: "",
     javascript: "",
   });
+  const [initialCodeStub, setInitialCodeSTub] = useState({
+    cpp: "",
+    java: "",
+    python: "",
+    javascript: "",
+  });
+
   const [testCases, setTestCases] = useState([{ input: '', output: '' }]);
 
   const steps = [
@@ -62,27 +70,31 @@ const ProblemCreator = () => {
   function takeSolution(sol) {
     setProblemSolution(sol)
   }
+  function takeInitialCodeStub(stub){
+    setInitialCodeSTub(stub)
+  }
 
   function handleSaveProblem() {
     let problemData = {
-      ...problemInfo,
+      title:problemTitle,
       description: problemDescription,
       difficulty: difficulty,
+      initialCodeStub:initialCodeStub,
       article: article,
       solution: problemSolution,
       testCases: testCases
+
     }
 
     axios.post(`${process.env.NEXT_PUBLIC_PROBLEM_SERVICE_URL}/v1/problems`, problemData)
-    .then(res => {
-      toast.success("Problem created successfully")
-    })
-    .catch(err =>
-    {
-      console.log("logged",err)
-      toast.error("Something went wrong Please try again")
-    }
-    )
+      .then(res => {
+        toast.success("Problem created successfully")
+      })
+      .catch(err => {
+        console.log("logged", err)
+        toast.error("Something went wrong Please try again")
+      }
+      )
 
   }
   return (
@@ -162,8 +174,8 @@ const ProblemCreator = () => {
                 <div className="space-y-6">
                   <Label className="text-lg text-white/90">Problem Title</Label>
                   <Input
-                    onChange={(e) => setProblemInfo({ ...problemInfo, title: e.target.value })}
-                    value={problemInfo.title || ''}
+                    onChange={(e) => setProblemTitle(e.target.value)}
+                    value={problemTitle}
                     placeholder="Enter an engaging title..."
                     className="bg-white/5 border-white/10 text-white placeholder:text-white/50 h-14 text-lg"
                   />
@@ -232,24 +244,7 @@ const ProblemCreator = () => {
 
             {/* Step 3: Code Stub */}
             {activeStep === 3 && (
-              <div className="space-y-6 animate-in fade-in duration-500">
-                <Label className="text-lg text-white/90">Initial Code Stub</Label>
-                <div className="rounded-xl overflow-hidden border border-white/10">
-                  <div className="bg-slate-800 p-3 border-b border-white/10 flex items-center gap-2">
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 rounded-full bg-rose-500" />
-                      <div className="w-3 h-3 rounded-full bg-amber-500" />
-                      <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                    </div>
-                  </div>
-                  <Textarea
-                    onChange={(e) => setProblemInfo({ ...problemInfo, codeStub: e.target.value })}
-                    value={problemInfo.codeStub || ''}
-                    className="min-h-[400px] bg-slate-900 border-0 text-white font-mono placeholder:text-white/30"
-                    placeholder="// Write your starter code here..."
-                  />
-                </div>
-              </div>
+              <CodeStub takeInitialCodeStub={takeInitialCodeStub} />
             )}
 
             {/* Step 4: Extras */}
