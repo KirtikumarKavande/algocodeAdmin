@@ -15,6 +15,7 @@ import { SolutionModal } from '@/components/ui/custom/SolutionModal';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import CodeStub from '@/components/CodeStub';
+import { difficultyOptions } from '@/utilities/constant';
 const ProblemCreator = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
@@ -61,12 +62,7 @@ const ProblemCreator = () => {
   };
 
 
-  const difficultyOptions = [
-    { level: 'easy', color: 'emerald', icon: Coffee },
-    { level: 'medium', color: 'amber', icon: Star },
-    { level: 'hard', color: 'rose', icon: Sparkles }
-  ];
-
+ 
   function takeSolution(sol) {
     setProblemSolution(sol)
   }
@@ -89,13 +85,16 @@ const ProblemCreator = () => {
     axios.post(`${process.env.NEXT_PUBLIC_PROBLEM_SERVICE_URL}/v1/problems`, problemData)
       .then(res => {
         toast.success("Problem created successfully")
+        setTimeout(()=>{
+          window.location.reload()
+        },200)
       })
       .catch(err => {
         console.log("logged", err)
         toast.error("Something went wrong Please try again")
       }
       )
-
+     
   }
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
